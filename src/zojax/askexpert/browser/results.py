@@ -63,7 +63,8 @@ class FormResults(object):
                 fields = []
                 for fieldId in grp.fields:
                     field = form.get(fieldId)
-                    getFieldData(field, fields)
+                    if field is not None:
+                        getFieldData(field, fields)
                 groups.append((grp.title, fields))
             else:
                 getFieldData(grp, fields_nogroup)
