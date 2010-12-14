@@ -18,6 +18,7 @@ $Id$
 from zope import interface, component
 from zope.security.proxy import removeSecurityProxy
 from zope.cachedescriptors.property import Lazy
+from zope.app.intid.interfaces import IIntIds
 
 from z3c.form import group
 
@@ -44,6 +45,7 @@ class FormResults(object):
         form = self.context
         record = dict(record)
         order = IOrder(form)
+        ids = component.getUtility(IIntIds)
 
         groups = []
 
@@ -61,10 +63,13 @@ class FormResults(object):
         for grp in order.values():
             if IGroup.providedBy(grp):
                 fields = []
-                for fieldId in grp.fields:
-                    field = form.get(fieldId)
-                    if field is not None:
-                        getFieldData(field, fields)
+                for id in grp.fields:
+                    try:
+                        field = ids.getObject(id)
+                    except (TypeError, KeyError), e:
+                        continue
+                    fieldId = field.__name__
+                    getFieldData(field, fields)
                 groups.append((grp.title, fields))
             else:
                 getFieldData(grp, fields_nogroup)
