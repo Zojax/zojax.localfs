@@ -11,6 +11,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+from zope.component.interfaces import IObjectEvent, ObjectEvent
 """
 
 $Id$
@@ -96,14 +97,15 @@ class IMailDataStorage(IFormDataStorage):
         required = True)
 
 
-class IFormSubmittedEvent(interface.Interface):
+class IFormSubmittedEvent(IObjectEvent):
     """ form submission event """
 
     data = interface.Attribute('Submitted data')
 
 
-class FormSubmittedEvent(object):
+class FormSubmittedEvent(ObjectEvent):
     interface.implements(IFormSubmittedEvent)
 
-    def __init__(self, data):
+    def __init__(self, object, data):
+        self.object = object
         self.data = data

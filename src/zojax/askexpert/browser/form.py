@@ -115,7 +115,7 @@ class Form(BaseForm, PageletForm):
             IStatusMessage(self.request).add(self.formErrorsMessage, 'warning')
         else:
             removeSecurityProxy(self.context).processData(data, self.request)
-            event.notify(FormSubmittedEvent(data))
+            event.notify(FormSubmittedEvent(self.context, data))
             IStatusMessage(self.request).add('Request has been processed.')
 
             if self.context.confirm:
