@@ -55,7 +55,10 @@ class LocalFsFolderBase(Item):
     def keys(self):
         """Return the keys of the mapping object.
         """
-        return os.listdir(self.abspath)
+        try:
+            return os.listdir(self.abspath)
+        except (OSError, IOError), e:
+            return []
 
     def __iter__(self):
         """Return an iterator for the keys of the mapping object.
