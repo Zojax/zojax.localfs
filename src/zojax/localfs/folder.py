@@ -17,6 +17,7 @@ from z3c.proxy.container import ContainerLocationProxy
 from zope.lifecycleevent import ObjectCreatedEvent
 from zope.event import notify
 from zope.location.location import LocationProxy
+from zope.cachedescriptors.property import Lazy
 """
 
 $Id$
@@ -32,23 +33,26 @@ from zojax.content.type.item import PersistentItem, Item
 from zojax.content.type.interfaces import IContentContainer
 from zojax.richtext.field import RichTextProperty
 
-from interfaces import ILocalFsFolder, ILocalFsFolderContent
+from interfaces import ILocalFsFolder, ILocalFsFolderContent, ILocalFsConfiglet
 
 
 class LocalFsFolderBase(Item):
     interface.implements(ILocalFsFolder, IContentContainer, IReadContainer)
     
-    path = FieldProperty(ILocalFsFolder['path'])
+    abspath = None
     
-    def __init__(self, path=None, name=None, **kw):
-        self.path = path
-        self.__name__ = name
+    
+    def __init__(self, abspath=None, name=None, **kw):
+        if abspath:
+            self.abspath = abspath
+        if name:
+            self.__name__ = name
         super(LocalFsFolderBase, self).__init__(**kw)
     
     def keys(self):
         """Return the keys of the mapping object.
         """
-        return os.listdir(self.path)
+        return os.listdir(self.abspath)
 
     def __iter__(self):
         """Return an iterator for the keys of the mapping object.
@@ -73,7 +77,7 @@ class LocalFsFolderBase(Item):
     def __getitem__(self, name):
         if name not in self.keys():
             raise KeyError(name)
-        filename = os.path.join(self.path, name)
+        filename = os.path.join(self.abspath, name)
         if os.path.isdir(filename):
             factory = IDirectoryFactory(self)
             newdir = factory(name)
@@ -101,6 +105,15 @@ class LocalFsFolderBase(Item):
 class LocalFsFolder(LocalFsFolderBase, PersistentItem):
     interface.implements(ILocalFsFolderContent)
     
+    path = FieldProperty(ILocalFsFolderContent['path'])
+    
+    @Lazy
+    def abspath(self):
+        basePath = component.getUtility(ILocalFsConfiglet).basePath
+        if basePath:
+            return os.path.join(basePath, self.path)
+        return self.path
+    
     
 class DirectoryFactory(object):
     """`IContainer` to `IDirectoryFactory` adapter that clones
@@ -124,6 +137,6 @@ class DirectoryFactory(object):
         # to clone the class.  Don't use this for classes that have
         # exciting side effects as a result of instantiation. :)
 
-        res = LocalFsFolderBase(path=os.path.join(self.context.path, name), name=name)
+        res = LocalFsFolderBase(path=os.path.join(self.context.abspath, name), name=name)
         res.__parent__ = self.context
         return res

@@ -31,11 +31,20 @@ class ILocalFsFile(IItem, IFile):
 class ILocalFsFolder(IItem):
     """ base """
 
-    path = schema.TextLine(
-        title = _(u'Local Fs Path'),
-        description = _(u'Local Fs Path.'),
-        required = True,)
+    abspath = interface.Attribute('abspath')
     
     
 class ILocalFsFolderContent(ILocalFsFolder):
     """ content """
+    
+    path = schema.TextLine(
+        title = _(u'Local Fs Path'),
+        description = _(u'Local Fs Path. Should be relative to base path setting in system settings'),
+        required = True,)
+    
+    
+class ILocalFsConfiglet(interface.Interface):
+
+    basePath = schema.TextLine(title=_(u'Base Path'),
+                               description=_(u'Base Path for local fs folders'),
+                               required=False)

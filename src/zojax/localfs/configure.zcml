@@ -7,6 +7,12 @@
      id="zojax.AddLocalFsFolder"
      title="Add local fs folder"
      description="Allow add local fs folders to portal." />
+     
+  <zojax:configlet
+    name="system.localfs"
+    schema=".interfaces.ILocalFsConfiglet"
+    title="Local Fs Configuration"
+    description="Configure Local Fs Integration" />
 
   <!-- folder -->
   <zojax:content
@@ -23,7 +29,7 @@
   <class class=".folder.LocalFsFolderBase">
     <require
        permission="zope.View"
-       interface=".interfaces.ILocalFsFolderContent
+       interface=".interfaces.ILocalFsFolder
                   zope.app.container.interfaces.IReadContainer" />
   </class>
   
@@ -34,11 +40,11 @@
 
     <require
        permission="zope.View"
-       interface=".interfaces.ILocalFsFolder
+       interface=".interfaces.ILocalFsFolderContent
                   zope.app.container.interfaces.IReadContainer" />
     <require
        permission="zojax.ModifyContent"
-       set_schema=".interfaces.ILocalFsFolder"
+       set_schema=".interfaces.ILocalFsFolderContent"
        />
   </class>
   
