@@ -21,7 +21,6 @@
      permission="zojax.AddLocalFsFolder" />
 
   <class class=".folder.LocalFsFolder">
-    <implements interface="zojax.content.type.interfaces.IAnnotatableOrder" />
     <implements interface="zojax.content.type.interfaces.IContainerContentsAware" />
     <implements interface="zojax.content.type.interfaces.ISearchableContent" />
     <implements interface="zojax.content.type.interfaces.ITitleBasedName" />
