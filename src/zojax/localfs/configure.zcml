@@ -26,7 +26,8 @@
      class=".folder.LocalFsFolder"
      permission="zojax.AddLocalFsFolder" />
      
-  <class class=".folder.LocalFsFolderBase">
+  <class class=".folder.LocalFsFolderDynamic">
+    <implements interface="zojax.content.type.interfaces.IUnremoveableContent" />
     <require
        permission="zope.View"
        interface=".interfaces.ILocalFsFolder
@@ -50,24 +51,6 @@
   
   <adapter factory=".folder.DirectoryFactory" />
   
-  <!-- file -->
-  <zojax:content
-     title="Local Fs File"
-     name="localfs.file"
-     schema=".interfaces.ILocalFsFile"
-     description="Local fs file"
-     type="zojax.content.type.interfaces.IInactiveType"
-     class=".file.LocalFsFile" />
-
-  <class class=".file.LocalFsFile">
-
-    <require
-       permission="zope.View"
-       interface=".interfaces.ILocalFsFile" />
-  </class>
-  
-  <adapter factory=".file.FileFactory" />
-
   <!-- permissions -->
   <zojax:permission
      permission="zojax.AddLocalFsFolder"

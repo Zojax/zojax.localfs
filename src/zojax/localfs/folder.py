@@ -18,6 +18,8 @@ from zope.lifecycleevent import ObjectCreatedEvent
 from zope.event import notify
 from zope.location.location import LocationProxy
 from zope.cachedescriptors.property import Lazy
+from zojax.theme.friendly.contenttypecategory.interfaces import IContentTypeCategory
+from zojax.contenttype.image.image import Image
 """
 
 $Id$
@@ -30,10 +32,12 @@ from zope.app.container.interfaces import IContainer, IReadContainer
 from zope.schema.fieldproperty import FieldProperty
 
 from zojax.content.type.item import PersistentItem, Item
-from zojax.content.type.interfaces import IContentContainer
+from zojax.content.type.interfaces import IContentContainer,\
+    IUnremoveableContent, IContentType
 from zojax.richtext.field import RichTextProperty
 
-from interfaces import ILocalFsFolder, ILocalFsFolderContent, ILocalFsConfiglet
+from interfaces import ILocalFsFolder, ILocalFsFolderContent, ILocalFsConfiglet,\
+                       ILocalFsFile, ILocalFsImage
 
 
 class LocalFsFolderBase(Item):
@@ -95,11 +99,22 @@ class LocalFsFolderBase(Item):
             f = ''
         newfile = factory(name, '', f)
         #notify(ObjectCreatedEvent(newfile))
+        newfile.__parent__ = self
+        newfile.__name__ = name
+        if isinstance(newfile, Image):
+            interface.alsoProvides(newfile, IUnremoveableContent, ILocalFsImage)
+        else:
+            interface.alsoProvides(newfile, IUnremoveableContent, ILocalFsFile)
         return newfile
 
     def __setitem__(self, name, value):
         raise NotImplementedError()
     
+
+class LocalFsFolderDynamic(LocalFsFolderBase):
+    
+    pass
+
 
 class LocalFsFolder(LocalFsFolderBase, PersistentItem):
     interface.implements(ILocalFsFolderContent)
@@ -135,7 +150,7 @@ class DirectoryFactory(object):
         # registering this adapter, one effectively gives permission
         # to clone the class.  Don't use this for classes that have
         # exciting side effects as a result of instantiation. :)
-
-        res = LocalFsFolderBase(abspath=os.path.join(self.context.abspath, name), name=name)
+        
+        res = LocalFsFolderDynamic(abspath=os.path.join(self.context.abspath, name), name=name)
         res.__parent__ = self.context
         return res

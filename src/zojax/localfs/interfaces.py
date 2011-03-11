@@ -11,7 +11,6 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-from zope.app.file.interfaces import IFile
 """
 
 $Id$
@@ -19,14 +18,21 @@ $Id$
 from zope import interface, schema
 from zope.i18nmessageid import MessageFactory
 from zope.component.interfaces import IObjectEvent, ObjectEvent
+
 from zojax.content.type.interfaces import IItem, IContent, IContentType
+from zojax.contenttype.file.interfaces import IFile
+from zojax.contenttype.image.interfaces import IImage
 
 _ = MessageFactory('zojax.localfs')
 
 
-class ILocalFsFile(IItem, IFile):
-    pass
+class ILocalFsFile(IFile):
+    """ local fs marker """
+    
 
+class ILocalFsImage(IImage):
+    """ local fs marker """
+    
 
 class ILocalFsFolder(IItem):
     """ base """
