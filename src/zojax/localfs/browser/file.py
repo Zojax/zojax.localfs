@@ -11,6 +11,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+from zope.size.interfaces import ISized
 """File views.
 
 $Id$
@@ -27,4 +28,8 @@ class FileView(file.FileView):
             'Content-Disposition','%s; filename="%s"'%(
                 contentDisposition, self.context.__name__.encode('utf-8')))
         return res
+    
+    def size(self):
+        return ISized(self.context).sizeForDisplay()
+
     
