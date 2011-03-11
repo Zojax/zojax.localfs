@@ -72,6 +72,8 @@ setup(name = 'zojax.localfs',
                           'zojax.layoutform',
                           'zojax.statusmessage',
                           'zojax.catalog',
+                          'zojax.contenttype.file',
+                          'zojax.contenttype.images'
                           ],
       extras_require = dict(test=['zope.app.testing',
                                   'zope.app.zcmlfiles',

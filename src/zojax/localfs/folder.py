@@ -123,9 +123,12 @@ class LocalFsFolder(LocalFsFolderBase, PersistentItem):
     
     @Lazy
     def abspath(self):
-        basePath = component.getUtility(ILocalFsConfiglet).basePath
+        basePath = component.getUtility(ILocalFsConfiglet, context=self).basePath
+        path = self.path
+        while path.startswith('/'):
+            path = path[1:]
         if basePath:
-            return os.path.join(basePath, self.path)
+            return os.path.join(basePath, path)
         return self.path
     
     

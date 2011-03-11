@@ -8,7 +8,11 @@
      title="Add local fs folder"
      description="Allow add local fs folders to portal." />
      
-  <zojax:configlet
+  
+    
+ <registerIn registry="zojax.product.zojax-contenttypes">
+ 
+ <zojax:configlet
     name="system.localfs"
     schema=".interfaces.ILocalFsConfiglet"
     title="Local Fs Configuration"
@@ -49,8 +53,6 @@
        />
   </class>
   
-  <adapter factory=".folder.DirectoryFactory" />
-  
   <!-- permissions -->
   <zojax:permission
      permission="zojax.AddLocalFsFolder"
@@ -67,6 +69,10 @@
   <!-- browser views -->
   <include package=".browser" />
 
+  </registerIn>
+  
+  <adapter factory=".folder.DirectoryFactory" />
+  
   <!-- capability -->
   <include file="capability.zcml" />
 
