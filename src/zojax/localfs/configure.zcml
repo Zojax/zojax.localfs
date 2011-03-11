@@ -15,7 +15,8 @@
      schema=".interfaces.ILocalFsFolder"
      description="Local fs folder"
      type="zojax.content.type.interfaces.IActivePortalType
-           zojax.content.space.interfaces.IContentSpaceType"
+           zojax.content.space.interfaces.IContentSpaceType
+           zojax.content.documents.interfaces.IDocumentType"
      class=".folder.LocalFsFolder"
      permission="zojax.AddLocalFsFolder" />
 
