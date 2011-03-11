@@ -61,6 +61,9 @@ class LocalFsFolderBase(Item):
         """Return an iterator for the keys of the mapping object.
         """
         return iter(self.keys())
+    
+    def __contains__(self, name):
+        return self.keys().__contains__(name)
 
     def values(self):
         """Return the values of the mapping object.
