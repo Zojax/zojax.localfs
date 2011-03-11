@@ -41,7 +41,6 @@ class LocalFsFolderBase(Item):
     
     abspath = None
     
-    
     def __init__(self, abspath=None, name=None, **kw):
         if abspath:
             self.abspath = abspath
@@ -137,6 +136,6 @@ class DirectoryFactory(object):
         # to clone the class.  Don't use this for classes that have
         # exciting side effects as a result of instantiation. :)
 
-        res = LocalFsFolderBase(path=os.path.join(self.context.abspath, name), name=name)
+        res = LocalFsFolderBase(abspath=os.path.join(self.context.abspath, name), name=name)
         res.__parent__ = self.context
         return res
