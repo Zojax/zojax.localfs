@@ -30,7 +30,7 @@
        name="view.html"
        for="..interfaces.ILocalFsFile"
        attribute="show"
-       class="zope.app.file.browser.file.FileView"
+       class=".file.FileView"
        permission="zope.View" />
 
 </configure>
