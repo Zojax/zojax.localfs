@@ -11,7 +11,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" zojax.askexpert tests
+""" zojax.localfs tests
 
 $Id$
 """
@@ -39,9 +39,9 @@ from zojax.layoutform.interfaces import ILayoutFormLayer
 from content import Portal
 
 
-zojaxAskExpertLayer = functional.ZCMLLayer(
+zojaxLocalFsLayer = functional.ZCMLLayer(
     os.path.join(os.path.split(__file__)[0], 'ftesting.zcml'),
-    __name__, 'zojaxAskExpertLayer', allow_teardown=True)
+    __name__, 'zojaxLocalFsLayer', allow_teardown=True)
 
 
 class PrincipalInformation(object):
@@ -56,7 +56,7 @@ class PrincipalInformation(object):
 
 
 def FunctionalDocFileSuite(*paths, **kw):
-    layer = zojaxAskExpertLayer
+    layer = zojaxLocalFsLayer
 
     globs = kw.setdefault('globs', {})
     globs['http'] = functional.HTTPCaller()

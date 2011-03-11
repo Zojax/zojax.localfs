@@ -11,7 +11,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Setup for zojax.askexpert package
+""" Setup for zojax.localfs package
 
 $Id$
 """
@@ -24,11 +24,11 @@ def read(*rnames):
 version='0.1dev'
 
 
-setup(name = 'zojax.askexpert',
+setup(name = 'zojax.localfs',
       version = version,
       author = 'Anatoly Bubenkof',
       author_email = 'bubenkoff@gmail.com',
-      description = "Ask expert",
+      description = "Local fs mirror for zope",
       long_description = (
           'Detailed Documentation\n' +
           '======================\n'
@@ -68,13 +68,10 @@ setup(name = 'zojax.askexpert',
                           'zojax.mail',
                           'zojax.content.type',
                           'zojax.content.browser',
-                          'zojax.content.draft',
                           'zojax.layout',
                           'zojax.layoutform',
                           'zojax.statusmessage',
                           'zojax.catalog',
-                          'zojax.persistent.fields',
-                          'zojax.portlet',
                           ],
       extras_require = dict(test=['zope.app.testing',
                                   'zope.app.zcmlfiles',
@@ -83,7 +80,6 @@ setup(name = 'zojax.askexpert',
                                   'zope.securitypolicy',
                                   'zojax.security',
                                   'zojax.autoinclude',
-                                  'zojax.persistent.fields [test]',
                                   'zojax.personal.space [test]',
                                   'zojax.personal.content [test]',
                                   ]),

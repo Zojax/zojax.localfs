@@ -1,0 +1,59 @@
+=============
+Local Fs
+=============
+
+    >>> from zope import component
+    >>> from zope.testbrowser.testing import Browser
+    >>> from zope.app.component.hooks import setSite
+    >>> from zope.securitypolicy.interfaces import IPrincipalPermissionManager
+    >>> from zope.app.security.interfaces import IAuthentication
+    >>> from zojax.principal.profile.interfaces import IPersonalProfile
+    >>> from zope.app.intid.interfaces import IIntIds
+    >>> import zojax.localfs.tests
+    >>> import os.path
+    >>> path = os.path.join(zojax.localfs.tests.__path__[0], 'testfolder')
+
+    >>> root = getRootFolder()
+    >>> setSite(root)
+    >>> sm = root.getSiteManager()
+    >>> auth = component.getUtility(IAuthentication)
+    >>> principal = auth.getPrincipal('zope.user')
+    >>> profile = IPersonalProfile(principal)
+    >>> profile.space
+
+    >>> admin = Browser()
+    >>> admin.addHeader("Authorization", "Basic mgr:mgrpw")
+    >>> admin.handleErrors = False
+
+    >>> user = Browser()
+    >>> user.addHeader("Authorization", "Basic user:userpw")
+    >>> user.handleErrors = False
+
+Create Local Fs Folder
+----------------------
+
+    >>> admin.open("http://localhost/space/+/localfs.folder")
+    >>> admin.getControl('Title').value = 'Some Folder'
+    >>> admin.getControl('Path').value = path
+    >>> admin.getControl('Add').click()
+    >>> admin.url
+    'http://localhost/space/some-folder/'
+    
+    >>> print admin.contents
+    <html>
+    ... ...<a href="http://localhost/space/some-folder/file.txt/">file.txt</a></td> <td>[No title]</td>...
+    ...
+  
+    >>> admin.getLink('file.txt').click()
+    >>> admin.url
+    'http://localhost/space/some-folder/file.txt/'
+    >>> admin.open('http://localhost/space/some-folder/file.txt/view.html')
+    
+    >>> admin.isHtml
+    False
+    
+    >>> admin.headers['content-type']
+    'text/plain'
+    
+    >>> admin.contents
+    'test'

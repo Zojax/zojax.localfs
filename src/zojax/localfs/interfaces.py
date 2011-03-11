@@ -11,19 +11,31 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+from zope.app.file.interfaces import IFile
 """
 
 $Id$
 """
-from zope import schema
+from zope import interface, schema
+from zope.i18nmessageid import MessageFactory
+from zope.component.interfaces import IObjectEvent, ObjectEvent
+from zojax.content.type.interfaces import IItem, IContent, IContentType
 
-from zojax.content.space.portlets.interfaces import IContentPortletsManagerConfiguration
+_ = MessageFactory('zojax.localfs')
 
 
-class IContentPortletsManagerConfiguration(IContentPortletsManagerConfiguration):
+class ILocalFsFile(IItem, IFile):
+    pass
 
-    portletIds = schema.Tuple(
-        title = u'Portlets',
-        value_type=schema.Choice(vocabulary = "zojax portlets"),
-        default = ('portlets.askexpertform',),
-        required = True)
+
+class ILocalFsFolder(IItem):
+    """ base """
+
+    path = schema.TextLine(
+        title = _(u'Local Fs Path'),
+        description = _(u'Local Fs Path.'),
+        required = True,)
+    
+    
+class ILocalFsFolderContent(ILocalFsFolder):
+    """ content """

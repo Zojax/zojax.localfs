@@ -1,0 +1,36 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:zojax="http://namespaces.zope.org/zojax"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   i18n_domain="zojax.localfs">
+
+  <!-- icons -->
+  <browser:icon
+     name="zmi_icon"
+     for="..interfaces.ILocalFsFolder"
+     file="resources/localfsfolder_icon.gif" />
+
+  <browser:icon
+     name="zmi_icon"
+     for="zojax.content.localfs_folder"
+     file="resources/localfsfolder_icon.gif" />
+     
+  <browser:icon
+     name="zmi_icon"
+     for="..interfaces.ILocalFsFile"
+     file="resources/localfsfile_icon.gif" />
+
+  <browser:icon
+     name="zmi_icon"
+     for="zojax.content.localfs_file"
+     file="resources/localfsfile_icon.gif" />
+     
+     
+  <browser:page
+       name="view.html"
+       for="..interfaces.ILocalFsFile"
+       attribute="show"
+       class="zope.app.file.browser.file.FileView"
+       permission="zope.View" />
+
+</configure>

@@ -15,13 +15,4 @@
 
 $Id$
 """
-from zope import interface
-
-
-class IFormResults(interface.Interface):
-    """ """
-
-    dictionary = interface.Attribute('dictionary')
-
-    def update():
-        """ update """
+from zope import schema

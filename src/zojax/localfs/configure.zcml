@@ -1,0 +1,77 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:zojax="http://namespaces.zope.org/zojax"
+   i18n_domain="zojax.localfs">
+
+  <permission
+     id="zojax.AddLocalFsFolder"
+     title="Add local fs folder"
+     description="Allow add local fs folders to portal." />
+
+  <!-- folder -->
+  <zojax:content
+     title="Local Fs Folder"
+     name="localfs.folder"
+     schema=".interfaces.ILocalFsFolder"
+     description="Local fs folder"
+     type="zojax.content.type.interfaces.IActivePortalType
+           zojax.content.space.interfaces.IContentSpaceType"
+     class=".folder.LocalFsFolder"
+     permission="zojax.AddLocalFsFolder" />
+
+  <class class=".folder.LocalFsFolder">
+    <implements interface="zojax.content.type.interfaces.IAnnotatableOrder" />
+    <implements interface="zojax.content.type.interfaces.IContainerContentsAware" />
+    <implements interface="zojax.content.type.interfaces.ISearchableContent" />
+    <implements interface="zojax.content.type.interfaces.ITitleBasedName" />
+
+    <require
+       permission="zope.View"
+       interface=".interfaces.ILocalFsFolder
+                  zope.app.container.interfaces.IReadContainer" />
+    <require
+       permission="zojax.ModifyContent"
+       attributes="updateOrder"
+       />
+  </class>
+  
+  <adapter factory=".folder.DirectoryFactory" />
+  
+  <!-- file -->
+  <zojax:content
+     title="Local Fs File"
+     name="localfs.file"
+     schema=".interfaces.ILocalFsFile"
+     description="Local fs file"
+     type="zojax.content.type.interfaces.IInactiveType"
+     class=".file.LocalFsFile" />
+
+  <class class=".file.LocalFsFile">
+
+    <require
+       permission="zope.View"
+       interface=".interfaces.ILocalFsFile" />
+  </class>
+  
+  <adapter factory=".file.FileFactory" />
+
+  <!-- permissions -->
+  <zojax:permission
+     permission="zojax.AddLocalFsFolder"
+     category="zojax.content.permissions.interfaces.IAddPermission" />
+
+  <zojax:contentpermission
+     for="zojax.content.space.interfaces.IContentSpace"
+     contenttype="localfs.form"
+     permission="zojax.AddLocalFsFolder"
+     managepermission="zojax.ManageContentPermission"
+     class="zojax.content.permissions.permission.ContentPermission"
+     category="zojax.content.permissions.interfaces.IAddPermission" />
+
+  <!-- browser views -->
+  <include package=".browser" />
+
+  <!-- capability -->
+  <include file="capability.zcml" />
+
+</configure>

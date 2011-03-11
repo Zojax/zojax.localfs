@@ -3,7 +3,7 @@
    xmlns:zcml="http://namespaces.zope.org/zcml">
 
   <!-- extensions -->
-  <class class=".form.Form"
+  <class class=".folder.LocalFsFolder"
    zcml:condition="installed zojax.extensions">
     <implements interface="zojax.extensions.interfaces.IExtensible" />
   </class>
