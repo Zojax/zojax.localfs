@@ -73,6 +73,14 @@
   
   <adapter factory=".folder.DirectoryFactory" />
   
+  <adapter for=".interfaces.ILocalFsFile"
+           implements="zojax.content.type.interfaces.ISearchableContent"
+           factory=".getSearchableText" />
+  
+  <adapter for=".interfaces.ILocalFsImage"
+           implements="zojax.content.type.interfaces.ISearchableContent"
+           factory=".getSearchableText" />
+  
   <!-- capability -->
   <include file="capability.zcml" />
 
