@@ -132,7 +132,7 @@ class LocalFsFolder(LocalFsFolderBase, PersistentItem):
             path = path[1:]
         if basePath:
             return os.path.join(basePath, path)
-        return self.path
+        return path
     
     
 class DirectoryFactory(object):
