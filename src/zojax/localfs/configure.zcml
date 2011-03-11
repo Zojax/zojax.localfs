@@ -12,7 +12,7 @@
   <zojax:content
      title="Local Fs Folder"
      name="localfs.folder"
-     schema=".interfaces.ILocalFsFolder"
+     schema=".interfaces.ILocalFsFolderContent"
      description="Local fs folder"
      type="zojax.content.type.interfaces.IActivePortalType
            zojax.content.space.interfaces.IContentSpaceType
@@ -27,7 +27,7 @@
 
     <require
        permission="zope.View"
-       interface=".interfaces.ILocalFsFolder
+       interface=".interfaces.ILocalFsFolderContent
                   zope.app.container.interfaces.IReadContainer" />
     <require
        permission="zojax.ModifyContent"
