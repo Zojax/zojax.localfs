@@ -19,7 +19,14 @@
            zojax.content.documents.interfaces.IDocumentType"
      class=".folder.LocalFsFolder"
      permission="zojax.AddLocalFsFolder" />
-
+     
+  <class class=".folder.LocalFsFolderBase">
+    <require
+       permission="zope.View"
+       interface=".interfaces.ILocalFsFolderContent
+                  zope.app.container.interfaces.IReadContainer" />
+  </class>
+  
   <class class=".folder.LocalFsFolder">
     <implements interface="zojax.content.type.interfaces.IContainerContentsAware" />
     <implements interface="zojax.content.type.interfaces.ISearchableContent" />
@@ -27,11 +34,11 @@
 
     <require
        permission="zope.View"
-       interface=".interfaces.ILocalFsFolderContent
+       interface=".interfaces.ILocalFsFolder
                   zope.app.container.interfaces.IReadContainer" />
     <require
        permission="zojax.ModifyContent"
-       attributes="updateOrder"
+       set_schema=".interfaces.ILocalFsFolder"
        />
   </class>
   

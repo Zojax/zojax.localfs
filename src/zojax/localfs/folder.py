@@ -28,14 +28,14 @@ from zope.app.container.ordered import OrderedContainer
 from zope.app.container.interfaces import IContainer, IReadContainer
 from zope.schema.fieldproperty import FieldProperty
 
-from zojax.content.type.item import PersistentItem
+from zojax.content.type.item import PersistentItem, Item
 from zojax.content.type.interfaces import IContentContainer
 from zojax.richtext.field import RichTextProperty
 
 from interfaces import ILocalFsFolder, ILocalFsFolderContent
 
 
-class LocalFsFolderBase(object):
+class LocalFsFolderBase(Item):
     interface.implements(ILocalFsFolder, IContentContainer, IReadContainer)
     
     path = FieldProperty(ILocalFsFolder['path'])
@@ -86,7 +86,11 @@ class LocalFsFolderBase(object):
         if factory is None:
             factory = IFileFactory(self)
 
-        newfile = factory(name, '', open(filename))
+        try:
+            f = open(filename)
+        except IOError:
+            f = ''
+        newfile = factory(name, '', f)
         #notify(ObjectCreatedEvent(newfile))
         return newfile
 
@@ -120,6 +124,6 @@ class DirectoryFactory(object):
         # to clone the class.  Don't use this for classes that have
         # exciting side effects as a result of instantiation. :)
 
-        res = LocalFsFolder(path=os.path.join(self.context.path, name), name=name)
+        res = LocalFsFolderBase(path=os.path.join(self.context.path, name), name=name)
         res.__parent__ = self.context
         return res

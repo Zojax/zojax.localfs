@@ -51,11 +51,17 @@ class LocalFsFile(Item):
     
     @property
     def data(self):
-        return open(self.path)
+        try:
+            return open(self.path)
+        except IOError:
+            return ''
 
     def getSize(self):
-        return os.path.getsize(self.path)
-
+        try:
+            return os.path.getsize(self.path)
+        except IOError:
+            return 0
+        
 
 class FileFactory(object):
 
