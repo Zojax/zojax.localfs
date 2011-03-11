@@ -53,13 +53,13 @@ class LocalFsFile(Item):
     def data(self):
         try:
             return open(self.path)
-        except IOError:
+        except (IOError, OSError), e:
             return ''
 
     def getSize(self):
         try:
             return os.path.getsize(self.path)
-        except IOError:
+        except (IOError, OSError), e:
             return 0
         
 

@@ -88,7 +88,7 @@ class LocalFsFolderBase(Item):
 
         try:
             f = open(filename)
-        except IOError:
+        except (IOError, OSError), e:
             f = ''
         newfile = factory(name, '', f)
         #notify(ObjectCreatedEvent(newfile))
