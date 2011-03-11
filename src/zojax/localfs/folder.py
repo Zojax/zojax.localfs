@@ -90,6 +90,9 @@ class LocalFsFolderBase(object):
         #notify(ObjectCreatedEvent(newfile))
         return newfile
 
+    def __setitem__(self, name, value):
+        raise NotImplementedError()
+    
 
 class LocalFsFolder(LocalFsFolderBase, PersistentItem):
     interface.implements(ILocalFsFolderContent)
