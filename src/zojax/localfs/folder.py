@@ -119,3 +119,4 @@ class DirectoryFactory(object):
 
         res = LocalFsFolder(path=os.path.join(self.context.path, name), name=name)
         res.__parent__ = self.context
+        return res

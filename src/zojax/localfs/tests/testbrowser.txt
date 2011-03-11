@@ -57,3 +57,20 @@ Create Local Fs Folder
     
     >>> admin.contents
     'test'
+    
+    >>> admin.open('http://localhost/space/some-folder/')
+    >>> admin.getLink('subfolder').click()
+    >>> admin.url
+    'http://localhost/space/some-folder/subfolder/'
+    
+    >>> admin.getLink('subfile.txt').click()
+    
+    >>> admin.open('view.html')
+    >>> admin.isHtml
+    False
+    
+    >>> admin.headers['content-type']
+    'text/plain'
+    
+    >>> admin.contents
+    'test subfile'
