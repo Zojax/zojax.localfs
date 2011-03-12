@@ -29,11 +29,7 @@ _ = MessageFactory('zojax.localfs')
 class ILocalFsFile(IFile):
     """ local fs marker """
     
-
-class ILocalFsImage(IImage):
-    """ local fs marker """
     
-
 class ILocalFsFolder(IItem):
     """ base """
 

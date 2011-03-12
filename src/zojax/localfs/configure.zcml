@@ -53,6 +53,22 @@
        />
   </class>
   
+  <!-- file -->
+  <zojax:content
+     title="Local Fs File"
+     name="localfs.file"
+     schema=".interfaces.ILocalFsFile"
+     description="Local Fs File"
+     type="zojax.content.type.interfaces.IInactiveType"
+     class=".file.LocalFsFile" />
+
+  <class class=".file.LocalFsFile">
+    <implements interface="zojax.content.type.interfaces.IUnremoveableContent" />
+    <require
+       permission="zope.View"
+       interface=".interfaces.ILocalFsFile" />
+  </class>
+  
   <!-- permissions -->
   <zojax:permission
      permission="zojax.AddLocalFsFolder"
@@ -72,14 +88,7 @@
   </registerIn>
   
   <adapter factory=".folder.DirectoryFactory" />
-  
-  <adapter for=".interfaces.ILocalFsFile"
-           provides="zojax.content.type.interfaces.ISearchableContent"
-           factory=".getSearchableText" />
-  
-  <adapter for=".interfaces.ILocalFsImage"
-           provides="zojax.content.type.interfaces.ISearchableContent"
-           factory=".getSearchableText" />
+  <adapter factory=".file.FileFactory" />
   
   <!-- capability -->
   <include file="capability.zcml" />

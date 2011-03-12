@@ -36,9 +36,7 @@ from zojax.content.type.interfaces import IContentContainer,\
     IUnremoveableContent, IContentType
 from zojax.richtext.field import RichTextProperty
 
-from interfaces import ILocalFsFolder, ILocalFsFolderContent, ILocalFsConfiglet,\
-                       ILocalFsFile, ILocalFsImage
-
+from interfaces import ILocalFsFolder, ILocalFsFolderContent, ILocalFsConfiglet
 
 class LocalFsFolderBase(Item):
     interface.implements(ILocalFsFolder, IContentContainer, IReadContainer)
@@ -95,9 +93,7 @@ class LocalFsFolderBase(Item):
         # Find the extension
         nm, ext = os.path.splitext(name)
             
-        factory = component.queryAdapter(self, IFileFactory, ext)
-        if factory is None:
-            factory = IFileFactory(self)
+        factory = IFileFactory(self)
 
         try:
             f = open(filename)
@@ -107,10 +103,6 @@ class LocalFsFolderBase(Item):
         #notify(ObjectCreatedEvent(newfile))
         newfile.__parent__ = self
         newfile.__name__ = name
-        if isinstance(newfile, Image):
-            interface.alsoProvides(newfile, IUnremoveableContent, ILocalFsImage)
-        else:
-            interface.alsoProvides(newfile, IUnremoveableContent, ILocalFsFile)
         return newfile
 
     def __setitem__(self, name, value):
@@ -127,7 +119,7 @@ class LocalFsFolder(LocalFsFolderBase, PersistentItem):
     
     path = FieldProperty(ILocalFsFolderContent['path'])
     
-    @Lazy
+    @property
     def abspath(self):
         basePath = component.getUtility(ILocalFsConfiglet, context=self).basePath
         path = self.path

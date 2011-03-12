@@ -15,6 +15,17 @@
      for="zojax.content.localfs_folder"
      file="resources/localfsfolder_icon.gif" />
      
+   <!-- icons -->
+  <browser:icon
+     name="zmi_icon"
+     for="..interfaces.ILocalFsFile"
+     file="resources/localfsfile_icon.gif" />
+
+  <browser:icon
+     name="zmi_icon"
+     for="zojax.content.localfs_file"
+     file="resources/localfsfile_icon.gif" />
+     
   <browser:page
        name="view.html"
        for="..interfaces.ILocalFsFile"
@@ -22,7 +33,7 @@
        class=".fileviews.FileDownload"
        permission="zope.View" />
 
-    <browser:page
+  <browser:page
       name="preview"
       for="..interfaces.ILocalFsFile"
       attribute="show"
@@ -30,19 +41,4 @@
       permission="zope.View"
       />
       
-    <browser:page
-       name="view.html"
-       for="..interfaces.ILocalFsImage"
-       attribute="show"
-       class=".imageviews.ImageDownload"
-       permission="zope.View" />
-
-    <browser:page
-      name="preview"
-      for="..interfaces.ILocalFsImage"
-      attribute="show"
-      class=".imageviews.ImagePreview"
-      permission="zope.View"
-      />
-     
 </configure>
