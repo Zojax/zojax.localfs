@@ -40,7 +40,7 @@ from zojax.richtext.field import RichTextProperty
 from interfaces import ILocalFsFolder, ILocalFsFolderContent, ILocalFsConfiglet
 
 class LocalFsFolderBase(Item):
-    interface.implements(ILocalFsFolder, IContentContainer, IReadContainer)
+    interface.implements(ILocalFsFolder, IContentContainer, IContainer)
     
     abspath = None    
     
