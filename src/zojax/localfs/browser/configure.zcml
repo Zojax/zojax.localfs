@@ -9,10 +9,15 @@
      name="zmi_icon"
      for="..interfaces.ILocalFsFolder"
      file="resources/localfsfolder_icon.gif" />
-
+  
   <browser:icon
      name="zmi_icon"
      for="zojax.content.localfs_folder"
+     file="resources/localfsfolder_icon.gif" />
+     
+  <browser:icon
+     name="zmi_icon"
+     for="zojax.content.localfs_folderdynamic"
      file="resources/localfsfolder_icon.gif" />
      
    <!-- icons -->

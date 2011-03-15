@@ -30,6 +30,16 @@
      class=".folder.LocalFsFolder"
      permission="zojax.AddLocalFsFolder" />
      
+  <!-- dynamic folder -->
+  <zojax:content
+     title="Local Fs Folder Dynamic"
+     name="localfs.folderdynamic"
+     schema=".interfaces.ILocalFsFolderDynamic"
+     description="Local fs folder dynamic"
+     type="zojax.content.type.interfaces.IInactiveType"
+     containers="localfs.folder"
+     class=".folder.LocalFsFolderDynamic" />
+     
   <class class=".folder.LocalFsFolderDynamic">
     <implements interface="zojax.content.type.interfaces.IUnremoveableContent" />
     <require

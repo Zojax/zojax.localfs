@@ -19,7 +19,8 @@ from zope import interface, schema
 from zope.i18nmessageid import MessageFactory
 from zope.component.interfaces import IObjectEvent, ObjectEvent
 
-from zojax.content.type.interfaces import IItem, IContent, IContentType
+from zojax.content.type.interfaces import IItem, IContent, IContentType,\
+    IContentContainer
 from zojax.contenttype.file.interfaces import IFile
 from zojax.contenttype.image.interfaces import IImage
 
@@ -30,7 +31,11 @@ class ILocalFsFile(IFile):
     """ local fs marker """
     
     
-class ILocalFsFolder(IItem):
+class ILocalFsImage(IImage):
+    """ local fs marker """
+    
+    
+class ILocalFsFolder(IItem, IContentContainer, IContent):
     """ base """
 
     abspath = interface.Attribute('abspath')
@@ -43,6 +48,10 @@ class ILocalFsFolderContent(ILocalFsFolder):
         title = _(u'Local Fs Path'),
         description = _(u'Local Fs Path. Should be relative to base path setting in system settings'),
         required = True,)
+
+
+class ILocalFsFolderDynamic(ILocalFsFolder):
+    """ dynamic """
     
     
 class ILocalFsConfiglet(interface.Interface):

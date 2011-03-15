@@ -20,6 +20,7 @@ from zope.location.location import LocationProxy
 from zope.cachedescriptors.property import Lazy
 from zojax.theme.friendly.contenttypecategory.interfaces import IContentTypeCategory
 from zojax.contenttype.image.image import Image
+from zojax.localfs.interfaces import ILocalFsFolderDynamic
 """
 
 $Id$
@@ -41,7 +42,7 @@ from interfaces import ILocalFsFolder, ILocalFsFolderContent, ILocalFsConfiglet
 class LocalFsFolderBase(Item):
     interface.implements(ILocalFsFolder, IContentContainer, IReadContainer)
     
-    abspath = None
+    abspath = None    
     
     def __init__(self, abspath=None, name=None, **kw):
         if abspath:
@@ -108,11 +109,21 @@ class LocalFsFolderBase(Item):
     def __setitem__(self, name, value):
         raise NotImplementedError()
     
+    def get(self, name, default=None):
+        try:
+            return self[name]
+        except KeyError:
+            return default
+    
 
 class LocalFsFolderDynamic(LocalFsFolderBase):
     
-    pass
+    interface.implements(ILocalFsFolderDynamic)
 
+    @property
+    def title(self):
+        return self.__name__
+    
 
 class LocalFsFolder(LocalFsFolderBase, PersistentItem):
     interface.implements(ILocalFsFolderContent)

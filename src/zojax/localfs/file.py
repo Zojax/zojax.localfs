@@ -66,7 +66,15 @@ class LocalFsFile(Item):
             return os.path.getsize(self.path)
         except (IOError, OSError), e:
             return 0
-        
+    
+    @property
+    def title(self):
+        return self.__name__
+    
+    @property
+    def disposition(self):
+        return self.data.previewIsAvailable and 'inline' or \
+                    'attachment'
 
 class FileFactory(object):
 
