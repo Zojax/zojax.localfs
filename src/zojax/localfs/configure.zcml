@@ -54,6 +54,7 @@
     <implements interface="zojax.content.type.interfaces.IContainerContentsAware" />
     <implements interface="zojax.content.type.interfaces.ISearchableContent" />
     <implements interface="zojax.content.type.interfaces.ITitleBasedName" />
+    <implements interface="zojax.ownership.interfaces.IOwnerAware" />
 
     <require
        permission="zope.View"
