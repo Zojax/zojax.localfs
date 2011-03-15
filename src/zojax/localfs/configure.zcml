@@ -28,6 +28,7 @@
            zojax.content.space.interfaces.IContentSpaceType
            zojax.content.documents.interfaces.IDocumentType"
      class=".folder.LocalFsFolder"
+     contains="localfs.folderdynamic localfs.file"
      permission="zojax.AddLocalFsFolder" />
      
   <!-- dynamic folder -->
