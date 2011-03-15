@@ -43,6 +43,7 @@
      
   <class class=".folder.LocalFsFolderDynamic">
     <implements interface="zojax.content.type.interfaces.IUnremoveableContent" />
+    <implements interface="zojax.content.type.interfaces.IContainerContentsAware" />
     <require
        permission="zope.View"
        interface=".interfaces.ILocalFsFolder
