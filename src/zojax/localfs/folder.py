@@ -11,16 +11,6 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-from zope.filerepresentation.interfaces import IWriteFile, IWriteDirectory,\
-    IDirectoryFactory, IFileFactory
-from z3c.proxy.container import ContainerLocationProxy
-from zope.lifecycleevent import ObjectCreatedEvent
-from zope.event import notify
-from zope.location.location import LocationProxy
-from zope.cachedescriptors.property import Lazy
-from zojax.theme.friendly.contenttypecategory.interfaces import IContentTypeCategory
-from zojax.contenttype.image.image import Image
-from zojax.localfs.interfaces import ILocalFsFolderDynamic
 """
 
 $Id$
@@ -28,29 +18,29 @@ $Id$
 import os.path
 
 from zope import interface, component
-from zope.app.container.ordered import OrderedContainer
-from zope.app.container.interfaces import IContainer, IReadContainer
+from zope.app.container.interfaces import IContainer
+from zope.filerepresentation.interfaces import IDirectoryFactory, IFileFactory
 from zope.schema.fieldproperty import FieldProperty
 
 from zojax.content.type.item import PersistentItem, Item
-from zojax.content.type.interfaces import IContentContainer,\
-    IUnremoveableContent, IContentType
-from zojax.richtext.field import RichTextProperty
+from zojax.content.type.interfaces import IContentContainer
 
-from interfaces import ILocalFsFolder, ILocalFsFolderContent, ILocalFsConfiglet
+from interfaces import ILocalFsFolder, ILocalFsFolderContent, \
+    ILocalFsConfiglet, ILocalFsFolderDynamic
+
 
 class LocalFsFolderBase(Item):
     interface.implements(ILocalFsFolder, IContentContainer, IContainer)
-    
-    abspath = None    
-    
+
+    abspath = None
+
     def __init__(self, abspath=None, name=None, **kw):
         if abspath:
             self.abspath = abspath
         if name:
             self.__name__ = name
         super(LocalFsFolderBase, self).__init__(**kw)
-    
+
     def keys(self):
         """Return the keys of the mapping object.
         """
@@ -63,25 +53,25 @@ class LocalFsFolderBase(Item):
         """Return an iterator for the keys of the mapping object.
         """
         return iter(self.keys())
-    
+
     def __contains__(self, name):
         return self.keys().__contains__(name)
 
     def values(self):
         """Return the values of the mapping object.
         """
-        return [self[i] for i in self.keys()] 
+        return [self[i] for i in self.keys()]
 
     def items(self):
         """Return the items of the mapping object.
         """
-        return [(i, self[i]) for i in self.keys()] 
+        return [(i, self[i]) for i in self.keys()]
 
     def __len__(self):
         """Return the number of items.
         """
         return len(self.keys())
-    
+
     def __getitem__(self, name):
         if name not in self.keys():
             raise KeyError(name)
@@ -90,10 +80,10 @@ class LocalFsFolderBase(Item):
             factory = IDirectoryFactory(self)
             newdir = factory(name)
             return newdir
-        
+
         # Find the extension
         nm, ext = os.path.splitext(name)
-            
+
         factory = IFileFactory(self)
 
         try:
@@ -108,28 +98,28 @@ class LocalFsFolderBase(Item):
 
     def __setitem__(self, name, value):
         raise NotImplementedError()
-    
+
     def get(self, name, default=None):
         try:
             return self[name]
         except KeyError:
             return default
-    
+
 
 class LocalFsFolderDynamic(LocalFsFolderBase):
-    
+
     interface.implements(ILocalFsFolderDynamic)
 
     @property
     def title(self):
         return self.__name__
-    
+
 
 class LocalFsFolder(LocalFsFolderBase, PersistentItem):
     interface.implements(ILocalFsFolderContent)
-    
+
     path = FieldProperty(ILocalFsFolderContent['path'])
-    
+
     @property
     def abspath(self):
         basePath = component.getUtility(ILocalFsConfiglet, context=self).basePath
@@ -139,8 +129,8 @@ class LocalFsFolder(LocalFsFolderBase, PersistentItem):
         if basePath:
             return os.path.join(basePath, path)
         return path
-    
-    
+
+
 class DirectoryFactory(object):
     """`IContainer` to `IDirectoryFactory` adapter that clones
 
@@ -155,14 +145,14 @@ class DirectoryFactory(object):
         self.context = context
 
     def __call__(self, name):
-        
+
         # We remove the security proxy so we can actually call the
         # class and return an unproxied new object.  (We can't use a
         # trusted adapter, because the result must be unproxied.)  By
         # registering this adapter, one effectively gives permission
         # to clone the class.  Don't use this for classes that have
         # exciting side effects as a result of instantiation. :)
-        
+
         res = LocalFsFolderDynamic(abspath=os.path.join(self.context.abspath, name), name=name)
         res.__parent__ = self.context
         return res
