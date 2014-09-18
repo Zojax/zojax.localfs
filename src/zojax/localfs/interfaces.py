@@ -17,45 +17,54 @@ $Id$
 """
 from zope import interface, schema
 from zope.i18nmessageid import MessageFactory
-from zope.component.interfaces import IObjectEvent, ObjectEvent
 
-from zojax.content.type.interfaces import IItem, IContent, IContentType,\
-    IContentContainer
+from zojax.content.type.interfaces import IItem, IContent, IContentContainer
 from zojax.contenttype.file.interfaces import IFile
-from zojax.contenttype.image.interfaces import IImage
+#from zojax.contenttype.image.interfaces import IImage
 
 _ = MessageFactory('zojax.localfs')
 
 
 class ILocalFsFile(IFile):
+
     """ local fs marker """
-    
-    
-class ILocalFsImage(IImage):
-    """ local fs marker """
-    
-    
+
+    size = interface.Attribute('size')
+
+
+#class ILocalFsImage(IImage):
+
+#    """ local fs marker """
+
+
 class ILocalFsFolder(IItem, IContentContainer, IContent):
+
     """ base """
 
     abspath = interface.Attribute('abspath')
-    
-    
+
+
 class ILocalFsFolderContent(ILocalFsFolder):
+
     """ content """
-    
+
     path = schema.TextLine(
-        title = _(u'Local Fs Path'),
-        description = _(u'Local Fs Path. Should be relative to base path setting in system settings'),
-        required = True,)
+        title=_(u'Local Fs Path'),
+        description=_(
+            u'Local Fs Path. Should be relative to base path setting in system settings'),
+        required=True)
 
 
 class ILocalFsFolderDynamic(ILocalFsFolder):
+
     """ dynamic """
-    
-    
+
+
 class ILocalFsConfiglet(interface.Interface):
 
-    basePath = schema.TextLine(title=_(u'Base Path'),
-                               description=_(u'Base Path for local fs folders'),
-                               required=False)
+    """ configlet """
+
+    basePath = schema.TextLine(
+        title=_(u'Base Path'),
+        description=_(u'Base Path for local fs folders'),
+        required=False)

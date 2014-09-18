@@ -11,12 +11,14 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-from zope.size.interfaces import ISized
+
 """File views.
 
 $Id$
 """
 from zope.app.file.browser import file
+from zope.security.proxy import removeSecurityProxy
+from zope.size.interfaces import ISized
 
 
 class FileView(file.FileView):
@@ -28,8 +30,9 @@ class FileView(file.FileView):
             'Content-Disposition','%s; filename="%s"'%(
                 contentDisposition, self.context.__name__.encode('utf-8')))
         return res
-    
-    def size(self):
-        return ISized(self.context).sizeForDisplay()
 
-    
+    def size(self):
+        return ISized(removeSecurityProxy(self.context)).sizeForDisplay()
+
+    def update(self):
+        super(FileView, self).update()

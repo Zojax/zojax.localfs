@@ -1,0 +1,12 @@
+<tal:block i18n:domain="zojax.contenttype.file">
+  <br />
+  <span class="discreet" i18n:translate="">Name:</span>
+  <tal:block content="context/__name__" />
+  (<a tal:attributes="href string:${context/@@absolute_url}/view.html"
+      tal:condition="context/canDownload"
+      i18n:translate="">Download</a><tal:block condition="context/canPreview">&nbsp;<a tal:attributes="href string:${context/@@absolute_url}/preview.html"
+      i18n:translate="" class="preview">Preview</a></tal:block>)
+  <br />
+  <span class="discreet" i18n:translate="">Size:</span>
+  <tal:block content="view/size" />
+</tal:block>

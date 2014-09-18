@@ -10,11 +10,9 @@
      id="zojax.AddLocalFsFolder"
      title="Add local fs folder"
      description="Allow add local fs folders to portal." />
-     
-  
-    
- <registerIn registry="zojax.product.zojax-contenttypes">
- 
+
+ <!--registerIn registry="zojax.product.zojax-contenttypes"-->
+
  <zojax:configlet
     name="system.localfs"
     schema=".interfaces.ILocalFsConfiglet"
@@ -33,7 +31,7 @@
      class=".folder.LocalFsFolder"
      contains="localfs.folderdynamic localfs.file"
      permission="zojax.AddLocalFsFolder" />
-     
+
   <!-- dynamic folder -->
   <zojax:content
      title="Local Fs Folder Dynamic"
@@ -42,8 +40,9 @@
      description="Local fs folder dynamic"
      type="zojax.content.type.interfaces.IInactiveType"
      containers="localfs.folder"
+     contains="localfs.folderdynamic localfs.file"
      class=".folder.LocalFsFolderDynamic" />
-     
+
   <class class=".folder.LocalFsFolderDynamic">
     <implements interface="zojax.content.type.interfaces.IUnremoveableContent" />
     <implements interface="zojax.content.type.interfaces.IContainerContentsAware" />
@@ -52,7 +51,7 @@
        interface=".interfaces.ILocalFsFolder
                   zope.app.container.interfaces.IReadContainer" />
   </class>
-  
+
   <class class=".folder.LocalFsFolder">
     <implements interface="zojax.content.type.interfaces.IContainerContentsAware" />
     <implements interface="zojax.content.type.interfaces.ISearchableContent" />
@@ -68,7 +67,7 @@
        set_schema=".interfaces.ILocalFsFolderContent"
        />
   </class>
-  
+
   <!-- file -->
   <zojax:content
      title="Local Fs File"
@@ -84,7 +83,7 @@
        permission="zope.View"
        interface=".interfaces.ILocalFsFile" />
   </class>
-  
+
   <!-- permissions -->
   <zojax:permission
      permission="zojax.AddLocalFsFolder"
@@ -101,11 +100,11 @@
   <!-- browser views -->
   <include package=".browser" />
 
-  </registerIn>
-  
+  <!--/registerIn-->
+
   <adapter factory=".folder.DirectoryFactory" />
   <adapter factory=".file.FileFactory" />
-  
+
   <!-- capability -->
   <include file="capability.zcml" />
 

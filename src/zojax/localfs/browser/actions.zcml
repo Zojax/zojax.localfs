@@ -1,0 +1,26 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:zojax="http://namespaces.zope.org/zojax"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   i18n_domain="zojax.usermanual">
+
+  <adapter
+     name="content.editlocalfsfile"
+     provides="zojax.content.actions.interfaces.IEditContentAction"
+     factory=".actions.EditLocalFsFileContentAction" />
+  <adapter
+     name="content.edit"
+     provides="zojax.content.actions.interfaces.IEditContentContextAction"
+     factory=".actions.EditLocalFsFileContentContextAction" />
+
+  <adapter
+     name="content.edit"
+     provides="zojax.content.actions.interfaces.IEditContentAction"
+     factory=".actions.EditLocalFsFileContentContextAction" />
+
+  <adapter
+     name="content.edit"
+     provides="zojax.content.actions.interfaces.IEditContentAction"
+     factory=".actions.EditLocalFsFolderContentContextAction" />
+
+</configure>

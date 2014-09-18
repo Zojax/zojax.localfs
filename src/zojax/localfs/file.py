@@ -11,15 +11,6 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-from zope.filerepresentation.interfaces import IWriteFile, IWriteDirectory,\
-    IDirectoryFactory, IFileFactory
-from z3c.proxy.container import ContainerLocationProxy
-from zope.lifecycleevent import ObjectCreatedEvent
-from zope.contenttype import guess_content_type
-from zope.app.file.image import getImageInfo
-from zope.app.file.interfaces import IFile
-from zope.cachedescriptors.property import Lazy
-from zojax.filefield.data import FileData, File
 """
 
 $Id$
@@ -27,54 +18,80 @@ $Id$
 import os.path
 
 from zope import interface, component
-from zope.app.container.ordered import OrderedContainer
-from zope.app.container.interfaces import IContainer, IReadContainer
-from zope.schema.fieldproperty import FieldProperty
+from zope.app.file.image import getImageInfo
+from zope.contenttype import guess_content_type
+from zope.filerepresentation.interfaces import IFileFactory
 
-from zojax.content.type.item import PersistentItem, Item
-from zojax.content.type.interfaces import IContentContainer
-from zojax.richtext.field import RichTextProperty
+from zojax.content.type.item import Item
+from zojax.filefield.data import DownloadResultFly, File as OrigFile
 
-from interfaces import ILocalFsFolder, ILocalFsFolderContent, ILocalFsFile
+from interfaces import ILocalFsFolder, ILocalFsFile
+
+
+
+class FileMixin(object):
+
+    def show(self, *kv, **kw):
+        res = self._show(*kv, **kw)
+        if res != '':
+            return DownloadResultFly(self)
+        return res
+
+
+class File(FileMixin, OrigFile):
+    pass
 
 
 class LocalFsFile(Item):
-    
+
     interface.implements(ILocalFsFile)
-    
+
     data = None
-    
+
     def __init__(self, name, abspath, content_type, **kw):
         self.__name__ = name
         self.abspath = abspath
         self.contentType = content_type
         super(LocalFsFile, self).__init__(**kw)
-    
+
     @property
     def data(self):
         try:
-            f = File();
+            f = File()
             f.data = open(self.abspath).read()
             f.mimeType = self.contentType
             f.filename = self.__name__
+            f.size = self.size
+            #f.modified =
             return f
         except (IOError, OSError), e:
             return ''
 
-    def getSize(self):
+    @property
+    def size(self):
         try:
-            return os.path.getsize(self.path)
+            return os.path.getsize(self.abspath)
         except (IOError, OSError), e:
             return 0
-    
+
     @property
     def title(self):
         return self.__name__
-    
+
     @property
     def disposition(self):
-        return self.data.previewIsAvailable and 'inline' or \
-                    'attachment'
+        # return self.data.previewIsAvailable and 'inline' or 'attachment'
+        # canDownload = contentDisposition='attachment'
+        # canPreview = contentDisposition='inline'
+        return 'attachment'
+
+    @property
+    def canDownload(self):
+        return True
+
+    @property
+    def canPreview(self):
+        return False
 
 class FileFactory(object):
 
@@ -89,6 +106,7 @@ class FileFactory(object):
             content_type, width, height = getImageInfo(data)
         if not content_type:
             content_type, encoding = guess_content_type(name, '', '')
-        res = LocalFsFile(name, os.path.join(self.context.abspath, name), content_type)
+        res = LocalFsFile(
+            name, os.path.join(self.context.abspath, name), content_type)
         res.__parent__ = self.context
         return res

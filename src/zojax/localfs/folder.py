@@ -91,7 +91,7 @@ class LocalFsFolderBase(Item):
         except (IOError, OSError), e:
             f = ''
         newfile = factory(name, '', f)
-        #notify(ObjectCreatedEvent(newfile))
+        # notify(ObjectCreatedEvent(newfile))
         newfile.__parent__ = self
         newfile.__name__ = name
         return newfile
@@ -122,7 +122,8 @@ class LocalFsFolder(LocalFsFolderBase, PersistentItem):
 
     @property
     def abspath(self):
-        basePath = component.getUtility(ILocalFsConfiglet, context=self).basePath
+        basePath = component.getUtility(
+            ILocalFsConfiglet, context=self).basePath
         path = self.path
         while path.startswith('/'):
             path = path[1:]
@@ -132,6 +133,7 @@ class LocalFsFolder(LocalFsFolderBase, PersistentItem):
 
 
 class DirectoryFactory(object):
+
     """`IContainer` to `IDirectoryFactory` adapter that clones
 
     This adapter provides a factory that creates a new empty container
@@ -153,6 +155,7 @@ class DirectoryFactory(object):
         # to clone the class.  Don't use this for classes that have
         # exciting side effects as a result of instantiation. :)
 
-        res = LocalFsFolderDynamic(abspath=os.path.join(self.context.abspath, name), name=name)
+        res = LocalFsFolderDynamic(
+            abspath=os.path.join(self.context.abspath, name), name=name)
         res.__parent__ = self.context
         return res

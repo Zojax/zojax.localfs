@@ -16,11 +16,14 @@
 $Id$
 """
 
+from zope.security.proxy import removeSecurityProxy
+
+
 class FileDownload(object):
 
     def show(self):
         if self.context.data is not None:
-            return self.context.data.showFly(
+            return removeSecurityProxy(self.context).data.showFly(
                 self.request,
                 filename=self.context.__name__,
                 contentDisposition=self.context.disposition)
@@ -30,7 +33,7 @@ class FilePreview(object):
 
     def show(self):
         if self.context.data is not None:
-            return self.context.data.showPreviewFly(
+            return removeSecurityProxy(self.context).data.showPreviewFly(
                 self.request,
                 filename=self.context.__name__,
                 contentDisposition='inline')

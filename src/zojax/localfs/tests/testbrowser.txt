@@ -29,48 +29,80 @@ Local Fs
     >>> user.addHeader("Authorization", "Basic user:userpw")
     >>> user.handleErrors = False
 
+Configlet
+---------
+
+    >>> admin.open("http://localhost/settings/system/localfs/")
+    >>> admin.getControl('Base Path').value = path
+    >>> admin.getControl('Save').click()
+    >>> print admin.contents
+    <html>
+    ...
+        <div id="z-portal-statusmessage"><div class="statusMessage">Data successfully updated.</div>
+    ...
+      <h1 class="z-form-label">Local Fs Configuration</h1>...
+    ...
+      <div class="z-form-help">Base Path for local fs folders</div>
+    ...
+        <input id="form-widgets-basePath"
+               name="form.widgets.basePath"
+               class="text-widget textline-field"
+               value=".../zojax.localfs/src/zojax/localfs/tests/testfolder"
+               type="text" />
+    ...
+    </html>
+
 Create Local Fs Folder
 ----------------------
 
     >>> admin.open("http://localhost/space/+/localfs.folder")
     >>> admin.getControl('Title').value = 'Some Folder'
-    >>> admin.getControl('Path').value = path
+    >>> admin.getControl('Local Fs Path').value = '/'
     >>> admin.getControl('Add').click()
     >>> admin.url
     'http://localhost/space/some-folder/'
-    
+
     >>> print admin.contents
     <html>
-    ... ...<a href="http://localhost/space/some-folder/file.txt/">file.txt</a></td> <td>[No title]</td>...
     ...
-  
+    ...Some Folder...
+    ...
+        <th ...></th> <th>Name</th> <th>Title</th> <th>Created</th> <th>Modified</th>
+    ...
+        <td ...><img src="..." alt="LocalFsFile" ... /></td> <td><a href="http://localhost/space/some-folder/file.txt/">file.txt</a></td> <td>file.txt</td> <td></td> <td>---</td>
+    ...
+        <td ...><img src="..." alt="LocalFsFolder" ... /></td> <td><a href="http://localhost/space/some-folder/subfolder/">subfolder</a></td> <td>subfolder</td> <td></td> <td>---</td>
+    ...
+    </html>
+
+
     >>> admin.getLink('file.txt').click()
     >>> admin.url
     'http://localhost/space/some-folder/file.txt/'
     >>> admin.open('http://localhost/space/some-folder/file.txt/view.html')
-    
+
     >>> admin.isHtml
     False
-    
+
     >>> admin.headers['content-type']
     'text/plain'
-    
+
     >>> admin.contents
     'test'
-    
+
     >>> admin.open('http://localhost/space/some-folder/')
     >>> admin.getLink('subfolder').click()
     >>> admin.url
     'http://localhost/space/some-folder/subfolder/'
-    
+
     >>> admin.getLink('subfile.txt').click()
-    
+
     >>> admin.open('view.html')
     >>> admin.isHtml
     False
-    
+
     >>> admin.headers['content-type']
     'text/plain'
-    
+
     >>> admin.contents
     'test subfile'

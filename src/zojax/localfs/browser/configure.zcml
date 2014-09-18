@@ -9,18 +9,17 @@
      name="zmi_icon"
      for="..interfaces.ILocalFsFolder"
      file="resources/localfsfolder_icon.gif" />
-  
+
   <browser:icon
      name="zmi_icon"
      for="zojax.content.localfs_folder"
      file="resources/localfsfolder_icon.gif" />
-     
+
   <browser:icon
      name="zmi_icon"
      for="zojax.content.localfs_folderdynamic"
      file="resources/localfsfolder_icon.gif" />
-     
-   <!-- icons -->
+
   <browser:icon
      name="zmi_icon"
      for="..interfaces.ILocalFsFile"
@@ -30,7 +29,8 @@
      name="zmi_icon"
      for="zojax.content.localfs_file"
      file="resources/localfsfile_icon.gif" />
-     
+
+   <!-- pages -->
   <browser:page
        name="view.html"
        for="..interfaces.ILocalFsFile"
@@ -43,7 +43,39 @@
       for="..interfaces.ILocalFsFile"
       attribute="show"
       class=".fileviews.FilePreview"
-      permission="zope.View"
-      />
-      
+      permission="zope.View" />
+
+  <browser:page
+     name="download.html"
+     for="..interfaces.ILocalFsFile"
+     attribute="show"
+     class=".fileviews.FileDownload"
+     permission="zope.View" />
+
+    <!--zojax:pagelet
+       name="view.html"
+       for="..interfaces.ILocalFsFile"
+       template="fileview.pt"
+       class=".file.FileView"
+       provides="zojax.content.type.interfaces.IContent"
+       permission="zope.View" /-->
+
+  <registerIn registry="zojax.product.zojax-contenttypes">
+
+    <browser:defaultView
+       name="index.html"
+       for="..interfaces.ILocalFsFile" />
+
+    <zojax:pagelet
+       name="index.html"
+       for="..interfaces.ILocalFsFile"
+       template="fileview.pt"
+       class=".file.FileView"
+       provides="zojax.content.type.interfaces.IContentView"
+       permission="zope.View" />
+
+  </registerIn>
+
+  <include file="actions.zcml" />
+
 </configure>
