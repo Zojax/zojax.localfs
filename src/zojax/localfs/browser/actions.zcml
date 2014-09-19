@@ -23,4 +23,21 @@
      provides="zojax.content.actions.interfaces.IEditContentAction"
      factory=".actions.EditLocalFsFolderContentContextAction" />
 
+  <configure
+     xmlns:zcml="http://namespaces.zope.org/zcml"
+     xmlns:browser="http://namespaces.zope.org/browser"
+     zcml:condition="installed zojax.externaleditor">
+
+        <adapter
+          name="content.externaledit"
+          provides="zojax.externaleditor.interfaces.IExternalEditAction"
+          factory=".actions.LocalFsFileExternalEditAction" />
+
+        <adapter
+          name="content.unlock"
+          provides="zojax.externaleditor.interfaces.IUnlockAction"
+          factory=".actions.LocalFsFileUnlockAction" />
+
+  </configure>
+
 </configure>

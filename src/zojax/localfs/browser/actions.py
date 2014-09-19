@@ -19,7 +19,8 @@ $Id$
 from zope import interface, component
 
 from zojax.content.actions.action import Action
-from zojax.content.actions.contentactions import EditContentAction
+from zojax.content.actions.contentactions import EditContentAction, \
+    ContentAction
 
 from ..interfaces import ILocalFsFile, ILocalFsFolder
 
@@ -41,6 +42,20 @@ class EditLocalFsFileContentContextAction(Action):
 
 class EditLocalFsFolderContentContextAction(Action):
     component.adapts(ILocalFsFolder, interface.Interface)
+
+    def isAvailable(self):
+        return False
+
+
+class LocalFsFileExternalEditAction(ContentAction):
+    component.adapts(ILocalFsFile, interface.Interface)
+
+    def isAvailable(self):
+        return False
+
+
+class LocalFsFileUnlockAction(ContentAction):
+    component.adapts(ILocalFsFile, interface.Interface)
 
     def isAvailable(self):
         return False
